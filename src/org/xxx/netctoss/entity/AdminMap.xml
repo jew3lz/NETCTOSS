@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--用于设置Mapper,则必须与对应的Mapper接口映射起来-->
+<mapper namespace="org.xxx.netctoss.dao.AdminMapper">
+    <select id="findByCode" parameterType="java.lang.String" resultType="org.xxx.netctoss.entity.Admin">
+        SELECT
+            ADMIN_ID,
+            ADMIN_CODE,
+            PASSWORD
+        FROM ADMIN_INFO
+        WHERE ADMIN_CODE = #{admin_code}
+    </select>
+
+    <select id="findByPage" parameterType="org.xxx.netctoss.vo.AdminInfoPage" resultMap="adminMap">
+        SELECT *
+        FROM (SELECT
+        a.*,
+        ROWNUM rn
+        FROM (SELECT *
+        FROM ADMIN_INFO
+        WHERE ADMIN_ID IN (SELECT a.ADMIN_ID
+        FROM ADMIN_INFO a LEFT JOIN ADMIN_ROLE ar ON a.ADMIN_ID = ar.ADMIN_ID
+        LEFT JOIN ROLE_INFO ri ON ri.ROLE_ID = ar.ROLE_ID
+        LEFT JOIN ROLE_PRIVILEGE rp ON rp.role_id = ri.ROLE_ID
+        <where>
+            <if test="!priId.equals(-1)">
+                AND rp.PRIVILEGE_ID = #{priId,jdbcType=NUMERIC}
+            </if>
+            <if test='!"*".equals(roleName)'>
+                AND ri.NAME = #{roleName,jdbcType = VARCHAR}
+            </if>
+        </where>
+        )
+        ORDER BY ADMIN_ID) a)
+        WHERE rn &gt; #{begin} AND rn &lt; #{end}
+    </select>
+
+    <resultMap id="adminMap" type="org.xxx.netctoss.entity.Admin">
+        <id property="admin_id" column="ADMIN_ID"/>
+        <collection property="roles" ofType="org.xxx.netctoss.entity.Role" javaType="java.util.ArrayList"
+                    column="ADMIN_ID" select="selectRoles"></collection>
+    </resultMap>
+
+    <select id="selectRoles" parameterType="int" resultType="org.xxx.netctoss.entity.Role">
+        SELECT *
+        FROM ROLE_INFO
+        WHERE ROLE_ID IN (SELECT ROLE_ID
+                          FROM ADMIN_ROLE
+                          WHERE ADMIN_ID = #{id})
+    </select>
+
+    <insert id="save" parameterType="org.xxx.netctoss.entity.Admin">
+        <selectKey keyProperty="admin_id" order="BEFORE" resultType="int">
+            SELECT admin_seq.nextval FROM DUAL
+        </selectKey>
+        INSERT INTO admin_info VALUES(
+        #{admin_id},
+        #{admin_code,jdbcType=VARCHAR},
+        #{password,jdbcType=VARCHAR},
+        #{name,jdbcType=VARCHAR},
+        #{telephone,jdbcType=VARCHAR},
+        #{email,jdbcType=VARCHAR},
+        #{enrolldate,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <insert id="saveAdminRoles" parameterType="hashMap">
+        INSERT INTO admin_role VALUES (
+            #{admin_id,jdbcType=NUMERIC},
+            #{role_id,jdbcType=NUMERIC}
+        )
+    </insert>
+
+    <select id="findById" parameterType="int" resultType="org.xxx.netctoss.entity.Admin">
+        SELECT *
+        FROM ADMIN_INFO
+        WHERE ADMIN_ID = #{id}
+    </select>
+
+    <update id="updateAdmin" parameterType="org.xxx.netctoss.entity.Admin">
+        UPDATE admin_info
+        SET
+            name      = #{name,jdbcType=VARCHAR},
+            telephone = #{telephone,jdbcType=VARCHAR},
+            email     = #{email,jdbcType=VARCHAR}
+        WHERE admin_id = #{admin_id}
+    </update>
+
+    <delete id="deleteAdminRoles" parameterType="int">
+        DELETE FROM ADMIN_ROLE
+        WHERE ADMIN_ID = #{id}
+    </delete>
+
+    <delete id="deleteAdmin" parameterType="int">
+        DELETE FROM ADMIN_INFO
+        WHERE ADMIN_ID = #{id}
+    </delete>
+
+    <select id="findPrivilegesByAdmin" parameterType="int" resultType="org.xxx.netctoss.entity.Privilege">
+        SELECT
+            MODULE_ID id,
+            name
+        FROM MODULE_INFO
+        WHERE MODULE_ID IN (
+            SELECT rm.privilege_id
+            FROM ADMIN_ROLE ar INNER JOIN ROLE_INFO ri ON ar.ROLE_ID = ri.ROLE_ID
+                INNER JOIN ROLE_PRIVILEGE rm ON rm.ROLE_ID = ri.ROLE_ID
+            WHERE ar.ADMIN_ID = #{id})
+    </select>
+
+    <resultMap id="privilegeMap" type="org.xxx.netctoss.entity.Privilege">
+        <id property="id" column="MODULE_ID"/>
+        <result property="name" column="name"/>
+    </resultMap>
+</mapper>

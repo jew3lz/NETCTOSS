@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--用于设置Mapper,则必须与对应的Mapper接口映射起来-->
+<mapper namespace="org.xxx.netctoss.dao.RoleMapper">
+    <select id="findAll" resultMap="roleMap">
+        SELECT
+            r.ROLE_ID,
+            r.NAME,
+            rp.PRIVILEGE_ID
+        FROM ROLE_INFO r LEFT OUTER JOIN ROLE_PRIVILEGE rp ON (r.ROLE_ID = rp.ROLE_ID)
+    </select>
+
+    <resultMap id="roleMap" type="org.xxx.netctoss.entity.Role">
+        <id property="role_id" column="ROLE_ID"/>
+        <result property="name" column="NAME"/>
+        <collection property="pris" javaType="java.util.ArrayList" ofType="org.xxx.netctoss.entity.RolePrivilege">
+            <result property="role_id" column="ROLE_ID"/>
+            <result property="privilege_id" column="PRIVILEGE_ID"/>
+        </collection>
+    </resultMap>
+
+    <select id="findPage" parameterType="org.xxx.netctoss.vo.Page" resultMap="roleMap">
+        SELECT *
+        FROM (SELECT
+                  ROLE_ID,
+                  NAME
+              FROM (SELECT
+                        ROWNUM rn,
+                        ROLE_ID,
+                        NAME
+                    FROM (SELECT
+                              r.ROLE_ID,
+                              r.NAME
+                          FROM
+                              ROLE_INFO r
+                          ORDER BY r.ROLE_ID))
+              WHERE rn &gt; #{begin} AND rn &lt; ${end}) rt LEFT OUTER JOIN ROLE_PRIVILEGE ON rt.ROLE_ID =
+                                                                                              ROLE_PRIVILEGE.ROLE_ID
+    </select>
+
+    <insert id="addRole" parameterType="org.xxx.netctoss.entity.Role">
+        <selectKey keyProperty="role_id" resultType="int" order="BEFORE">
+            SELECT ROLE_SEQ.nextval FROM DUAL
+        </selectKey>
+        INSERT INTO ROLE_INFO(ROLE_ID,NAME) VALUES(#{role_id},#{name})
+    </insert>
+
+    <insert id="addRolePrivilege" parameterType="org.xxx.netctoss.entity.RolePrivilege">
+        INSERT INTO ROLE_PRIVILEGE VALUES (#{role_id}, #{privilege_id})
+    </insert>
+
+    <select id="findById" parameterType="int" resultType="org.xxx.netctoss.entity.Role">
+        SELECT *
+        FROM ROLE_INFO
+        WHERE ROLE_ID = #{role_id}
+    </select>
+
+    <select id="findPrivilegeIdByRoleId" parameterType="int" resultType="int">
+        SELECT PRIVILEGE_ID
+        FROM ROLE_PRIVILEGE
+        WHERE ROLE_ID = #{role_id}
+    </select>
+
+    <update id="updateRole" parameterType="org.xxx.netctoss.entity.Role">
+        UPDATE ROLE_INFO
+        SET NAME = #{name}
+        WHERE ROLE_ID = #{role_id}
+    </update>
+
+    <delete id="deletePrivilegeByRoleId" parameterType="int">
+        DELETE ROLE_PRIVILEGE
+        WHERE ROLE_ID = #{role_id}
+    </delete>
+
+    <select id="findRows" resultType="int">
+        SELECT count(*)
+        FROM ROLE_INFO
+    </select>
+</mapper>

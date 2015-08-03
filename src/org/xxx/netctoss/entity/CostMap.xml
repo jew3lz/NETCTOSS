@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--用于设置Mapper,则必须与对应的Mapper接口映射起来-->
+<mapper namespace="org.xxx.netctoss.dao.CostMapper">
+    <select id="findAll" resultType="org.xxx.netctoss.entity.Cost">
+        SELECT *
+        FROM COST
+        ORDER BY COST_ID
+    </select>
+    <update id="deleteCost" parameterType="int">
+        DELETE FROM COST
+        WHERE COST_ID = #{id}
+    </update>
+    <insert id="addCost" parameterType="org.xxx.netctoss.entity.Cost">
+        -- Oracle主键映射
+        <selectKey keyProperty="cost_id" order="BEFORE" resultType="int">
+            -- 这里会首先把得到的主键值放入cost对象中.
+            SELECT COST_SEQ.nextval FROM DUAL
+        </selectKey>
+        INSERT INTO COST (COST_ID, NAME, BASE_DURATION, BASE_COST, UNIT_COST, STATUS, DESCR, CREATIME, STARTIME,
+        COST_TYPE)
+        VALUES (#{cost_id}, #{name}, #{base_duration}, #{base_cost}, #{unit_cost}, '1', #{descr}, sysdate, NULL,
+        #{cost_type})
+    </insert>
+    <select id="findById" parameterType="int" resultType="org.xxx.netctoss.entity.Cost">
+        SELECT *
+        FROM COST
+        WHERE COST_ID = #{id}
+    </select>
+    <!-- 这里加上jdbcType属性,防止插入null值失败 -->
+    <update id="updateCost" parameterType="org.xxx.netctoss.entity.Cost">
+        UPDATE COST
+        SET NAME          = #{name}, BASE_COST = #{base_cost,jdbcType=NUMERIC},
+            BASE_DURATION = #{base_duration,jdbcType = NUMERIC},
+            UNIT_COST     = #{unit_cost,jdbcType=NUMERIC},
+            DESCR         = #{descr}, COST_TYPE = #{cost_type,jdbcType=VARCHAR}
+        WHERE COST_ID = #{cost_id}
+    </update>
+    <update id="startCost" parameterType="int">
+        UPDATE COST
+        SET STATUS = '0'
+        WHERE COST_ID = #{id}
+    </update>
+    <select id="findPage" parameterType="org.xxx.netctoss.vo.Page" resultType="org.xxx.netctoss.entity.Cost">
+        SELECT *
+        FROM (SELECT
+                  ROWNUM rn,
+                  c.*
+              FROM (SELECT *
+                    FROM COST
+                    ORDER BY COST_ID) c)
+        WHERE rn &gt; #{begin} AND rn &lt; #{end}
+    </select>
+    <select id="findRows" resultType="int">
+        SELECT COUNT(*)
+        FROM COST
+    </select>
+
+    <select id="findByName" parameterType="string" resultType="org.xxx.netctoss.entity.Cost">
+        SELECT *
+        FROM COST
+        WHERE NAME = #{name}
+    </select>
+</mapper>

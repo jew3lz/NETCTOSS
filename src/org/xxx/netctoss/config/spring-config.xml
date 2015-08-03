@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd   http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <util:properties id="db" location="classpath:org/xxx/netctoss/config/jdbc.properties"/>
+
+    <bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="#{db.driver}"/>
+        <property name="url" value="#{db.url}"/>
+        <property name="username" value="#{db.username}"/>
+        <property name="password" value="#{db.password}"/>
+    </bean>
+    <!-- SqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="myDataSource"/>
+        <property name="mapperLocations" value="classpath:org/xxx/netctoss/entity/*.xml"/>
+    </bean>
+    <!-- 使用MapperScannerConfigurer替代MapperFactoryBean-->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="org.xxx.netctoss.dao"/>
+        <property name="annotationClass" value="org.xxx.netctoss.annotation.MyBatisRepository"/>
+        <!-- SqlSessionFactory自动注入 -->
+    </bean>
+    <!-- Spring MVC -->
+    <context:component-scan base-package="org.xxx.netctoss"/>
+    <!--<context:component-scan base-package="org.xxx.netctoss.dao"/>-->
+
+    <mvc:annotation-driven/>
+
+    <!-- 解决使用RESTful架构后对静态资源的拦截 -->
+    <mvc:default-servlet-handler/>
+
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/Pages/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!-- 配置拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!-- 拦截器处理的请求 -->
+            <mvc:mapping path="/**"/>
+            <!-- 拦截器放行的请求 -->
+            <!--<mvc:exclude-mapping path="/login/**"/>-->
+            <bean class="org.xxx.netctoss.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/login/**"/>
+            <mvc:exclude-mapping path="/js/*"/>
+            <mvc:exclude-mapping path="/styles/*"/>
+            <mvc:exclude-mapping path="/images/*"/>
+            <mvc:exclude-mapping path="/user/**"/>
+            <!--<mvc:exclude-mapping path="/report"/>-->
+            <bean class="org.xxx.netctoss.interceptor.PowerInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <!-- 事务控制 -->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="myDataSource"/>
+    </bean>
+
+    <!-- 异常处理器 -->
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionAttribute" value="ex"/>
+        <property name="exceptionMappings">
+            <props>
+                <!-- 这里会交给View处理器去找error.jsp要自己定义.同时这里可以指定不同异常指定不同错误页面.名字自定义-->
+                <prop key="java.lang.Exception">error</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- 为了支持@Transaction -->
+    <tx:annotation-driven transaction-manager="txManager"/>
+</beans>

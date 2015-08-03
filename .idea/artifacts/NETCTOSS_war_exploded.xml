@@ -1,0 +1,80 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="NETCTOSS:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/NETCTOSS_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="NETCTOSS/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="NETCTOSS" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Spring-4.1.6.RELEASE" />
+          <element id="library" level="project" name="Spring MVC-4.1.6.RELEASE" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/jstl.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/standard.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.ejb.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.jms.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/commons-pool.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.servlet.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/mybatis-3.2.5.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-ibatis.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.resource.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/aopalliance-1.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.annotation.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.transaction.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/commons-dbcp-1.2.2.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/javax.persistence_2.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/mybatis-spring-1.2.2.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/commons-logging-1.1.3.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-tx-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-tx-4.1.6.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-aop-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-aop-4.1.6.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-jms-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-jms-4.1.6.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-orm-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-orm-4.1.6.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-oxm-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-oxm-4.1.6.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-web-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-web-4.1.6.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-core-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-core-4.1.6.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-jdbc-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-jdbc-4.1.6.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-test-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-test-4.1.6.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-beans-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-beans-4.1.6.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-webmvc-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-webmvc-4.1.6.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-aspects-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-aspects-4.1.6.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-context-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-context-4.1.6.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/mysql-connector-java-5.0.8-bin.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-messaging-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-messaging-4.1.6.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-websocket-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-websocket-4.1.6.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-expression-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-expression-4.1.6.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-instrument-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-instrument-4.1.6.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-webmvc-portlet-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-webmvc-portlet-4.1.6.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-context-support-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-context-support-4.1.6.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-instrument-tomcat-4.1.5.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/spring-instrument-tomcat-4.1.6.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/ojdbc6.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/junit-4.7.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/dom4j-1.6.1.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/jackson-core-2.4.1.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/jackson-databind-2.4.1.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/jackson-annotations-2.4.1.jar" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

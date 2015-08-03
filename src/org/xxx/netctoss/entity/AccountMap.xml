@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--用于设置Mapper,则必须与对应的Mapper接口映射起来-->
+<mapper namespace="org.xxx.netctoss.dao.AccountMapper">
+    <select id="findByCondition" parameterType="org.xxx.netctoss.vo.AccountPage"
+            resultType="org.xxx.netctoss.entity.Account">
+        SELECT * FROM (SELECT t1.*,ROWNUM rn FROM (SELECT * FROM ACCOUNT
+        <where>
+            <if test='!"*".equals(idcard_no)'>
+                and IDCARD_NO = #{idcard_no,jdbcType=NUMERIC}
+            </if>
+            <if test='!"*".equals(real_name)'>
+                and REAL_NAME = #{real_name,jdbcType=VARCHAR}
+            </if>
+            <if test='!"*".equals(login_name)'>
+                and LOGIN_NAME = #{login_name,jdbcType=VARCHAR}
+            </if>
+            <if test='!"-1".equals(status)'>
+                and STATUS = #{status,jdbcType=VARCHAR}
+            </if>
+        </where>
+        ORDER BY ID) t1) WHERE rn &gt;#{begin} AND rn &lt; #{end}
+    </select>
+    <select id="findRows" parameterType="org.xxx.netctoss.vo.AccountPage" resultType="int">
+        SELECT count(*) FROM ACCOUNT
+        <where>
+            <if test='!"*".equals(idcard_no)'>
+                and IDCARD_NO = #{idcard_no,jdbcType=NUMERIC}
+            </if>
+            <if test='!"*".equals(real_name)'>
+                and REAL_NAME = #{real_name,jdbcType=VARCHAR}
+            </if>
+            <if test='!"*".equals(login_name)'>
+                and LOGIN_NAME = #{login_name,jdbcType=VARCHAR}
+            </if>
+            <if test='!"-1".equals(status)'>
+                and STATUS = #{status,jdbcType=VARCHAR}
+            </if>
+        </where>
+        ORDER BY ID
+    </select>
+
+    <select id="findById" parameterType="int" resultType="org.xxx.netctoss.entity.Account">
+        SELECT *
+        FROM ACCOUNT
+        WHERE ID = #{id}
+    </select>
+    <update id="setStatus"
+            parameterType="org.xxx.netctoss.entity.Account">
+        update account set status=#{status},
+        <choose>
+            <when test="status==0">
+                pause_date=null
+            </when>
+            <when test="status==1">
+                pause_date=SYSDATE
+            </when>
+            <otherwise>
+                close_date=SYSDATE
+            </otherwise>
+        </choose>
+        where id=#{id}
+    </update>
+
+    <update id="updateAccount" parameterType="org.xxx.netctoss.entity.Account">
+        UPDATE account
+        SET
+            recommender_id = #{recommender_id,jdbcType=NUMERIC},
+            real_name      = #{real_name,jdbcType=VARCHAR},
+            telephone      = #{telephone,jdbcType=VARCHAR},
+            email          = #{email,jdbcType=VARCHAR},
+            occupation     = #{occupation,jdbcType=VARCHAR},
+            gender         = #{gender,jdbcType=CHAR},
+            mailaddress    = #{mailaddress,jdbcType=VARCHAR},
+            zipcode        = #{zipcode,jdbcType=CHAR},
+            qq             = #{qq,jdbcType=VARCHAR}
+        WHERE id = #{id}
+    </update>
+
+    <insert id="save" parameterType="org.xxx.netctoss.entity.Account">
+        INSERT INTO account VALUES (
+            account_seq.nextval,
+            #{recommender_id,jdbcType=NUMERIC},
+            #{login_name,jdbcType=VARCHAR},
+            #{login_passwd,jdbcType=VARCHAR},
+            #{status,jdbcType=CHAR},
+            #{create_date,jdbcType=TIMESTAMP},
+            #{pause_date,jdbcType=TIMESTAMP},
+            #{close_date,jdbcType=TIMESTAMP},
+            #{real_name,jdbcType=VARCHAR},
+            #{idcard_no,jdbcType=VARCHAR},
+            #{birthdate,jdbcType=DATE},
+            #{gender,jdbcType=CHAR},
+            #{occupation,jdbcType=VARCHAR},
+            #{telephone,jdbcType=VARCHAR},
+            #{email,jdbcType=VARCHAR},
+            #{mailaddress,jdbcType=VARCHAR},
+            #{zipcode,jdbcType=CHAR},
+            #{qq,jdbcType=VARCHAR},
+            #{last_login_time,jdbcType=TIMESTAMP},
+            #{last_login_ip,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <select id="findByIdCardNo" parameterType="string" resultType="org.xxx.netctoss.entity.Account">
+        SELECT *
+        FROM account
+        WHERE idcard_no = #{idcardNo}
+    </select>
+</mapper>

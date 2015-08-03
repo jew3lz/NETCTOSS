@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--用于设置Mapper,则必须与对应的Mapper接口映射起来-->
+<mapper namespace="org.xxx.netctoss.dao.UserMapper">
+    <select id="findByName" parameterType="string" resultMap="adminMap">
+        SELECT * FROM ADMIN_INFO WHERE ADMIN_CODE = #{name}
+    </select>
+
+    <resultMap id="adminMap" type="org.xxx.netctoss.entity.Admin">
+        <id property="admin_id" column="ADMIN_ID"/>
+        <collection property="roles" column="admin_id" ofType="org.xxx.netctoss.entity.Role"
+                    javaType="java.util.ArrayList" select="selectRoles"/>
+    </resultMap>
+
+    <select id="selectRoles" parameterType="int" resultType="org.xxx.netctoss.entity.Role">
+        SELECT *
+        FROM ROLE_INFO
+        WHERE ROLE_ID IN (SELECT ROLE_ID
+                          FROM ADMIN_ROLE
+                          WHERE ADMIN_ID = #{id})
+    </select>
+
+    <update id="update" parameterType="org.xxx.netctoss.entity.Admin">
+        UPDATE admin_info
+        SET
+            name      = #{name,jdbcType=VARCHAR},
+            telephone = #{telephone,jdbcType=VARCHAR},
+            email     = #{email,jdbcType=VARCHAR}
+        WHERE admin_id = #{admin_id}
+    </update>
+
+    <update id="changePwd" parameterType="org.xxx.netctoss.entity.Admin">
+        UPDATE admin_info
+        SET
+            PASSWORD  = #{password,jdbcType=VARCHAR},
+        WHERE admin_id = #{admin_id}
+    </update>
+</mapper>

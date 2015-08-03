@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/src/org/xxx/netctoss/entity/AccountMap.xml" dialect="Oracle" />
+    <file url="file://$PROJECT_DIR$/src/org/xxx/netctoss/entity/AdminMap.xml" dialect="Oracle" />
+    <file url="file://$PROJECT_DIR$/src/org/xxx/netctoss/entity/CostMap.xml" dialect="Oracle" />
+    <file url="file://$PROJECT_DIR$/src/org/xxx/netctoss/entity/RoleMap.xml" dialect="Oracle" />
+    <file url="file://$PROJECT_DIR$/src/org/xxx/netctoss/entity/ServiceMap.xml" dialect="Oracle" />
+  </component>
+</project>

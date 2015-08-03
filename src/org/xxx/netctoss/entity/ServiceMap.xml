@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<!--用于设置Mapper,则必须与对应的Mapper接口映射起来-->
+<mapper namespace="org.xxx.netctoss.dao.ServiceMapper">
+    <select id="findByCondition" parameterType="org.xxx.netctoss.vo.ServicePage"
+            resultType="org.xxx.netctoss.vo.ServiceLine">
+        SELECT * FROM (SELECT t1.*,ROWNUM rn
+        FROM (SELECT
+        s.ID,
+        s.ACCOUNT_ID,
+        a.IDCARD_NO,
+        a.REAL_NAME,
+        s.OS_USERNAME,
+        s.STATUS,
+        s.UNIX_HOST,
+        c.NAME COST_NAME,
+        c.DESCR COST_DESCR
+        FROM SERVICE s JOIN ACCOUNT a ON (s.ACCOUNT_ID = a.ID)
+        JOIN COST c ON (s.COST_ID = c.COST_ID)
+        <where>
+            <if test='!"*".equals(os_username)'>
+                AND s.OS_USERNAME=#{os_username,jdbcType=VARCHAR}
+            </if>
+            <if test='!"*".equals(unix_host)'>
+                AND s.UNIX_HOST=#{unix_host,jdbcType=VARCHAR}
+            </if>
+            <if test='!"*".equals(idcard_no)'>
+                AND a.IDCARD_NO=#{idcard_no,jdbcType=NUMERIC}
+            </if>
+            <if test='!"-1".equals(status)'>
+                AND s.STATUS=#{status,jdbcType=VARCHAR}
+            </if>
+        </where>
+        ORDER BY ID)t1) WHERE rn &gt; #{begin} AND rn &lt; #{end}
+    </select>
+    <select id="findRows" parameterType="org.xxx.netctoss.vo.ServicePage" resultType="int">
+        SELECT COUNT(*) FROM SERVICE s JOIN ACCOUNT a ON (s.ACCOUNT_ID = a.ID)
+        JOIN COST c ON (s.COST_ID = c.COST_ID)
+        <where>
+            <if test='!"*".equals(os_username)'>
+                AND s.OS_USERNAME=#{os_username,jdbcType=VARCHAR}
+            </if>
+            <if test='!"*".equals(unix_host)'>
+                AND s.UNIX_HOST=#{unix_host,jdbcType=VARCHAR}
+            </if>
+            <if test='!"*".equals(idcard_no)'>
+                AND a.IDCARD_NO=#{idcard_no,jdbcType=NUMERIC}
+            </if>
+            <if test='!"-1".equals(status)'>
+                AND s.STATUS=#{status,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    <insert id="save" parameterType="org.xxx.netctoss.entity.Service">
+        INSERT INTO service VALUES (
+            service_seq.nextval,
+            #{account_id,jdbcType=NUMERIC},
+            #{unix_host,jdbcType=VARCHAR},
+            #{os_username,jdbcType=VARCHAR},
+            #{login_passwd,jdbcType=VARCHAR},
+            #{status,jdbcType=VARCHAR},
+            #{create_date,jdbcType=TIMESTAMP},
+            #{pause_date,jdbcType=TIMESTAMP},
+            #{close_date,jdbcType=TIMESTAMP},
+            #{cost_id,jdbcType=NUMERIC}
+        )
+    </insert>
+</mapper>
