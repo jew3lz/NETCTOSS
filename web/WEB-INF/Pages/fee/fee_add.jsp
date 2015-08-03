@@ -110,8 +110,8 @@
 	<li><a href="../service/service_list.html" class="service_off"></a></li>
 	<li><a href="../bill/bill_list.html" class="bill_off"></a></li>
 	<li><a href="../report/report_list.html" class="report_off"></a></li>
-	<li><a href="../user/user_info.html" class="information_off"></a></li>
-	<li><a href="../user/user_modi_pwd.html" class="password_off"></a></li>
+	<li><a href="/NETCTOSS/user/info" class="information_off"></a></li>
+	<li><a href="/NETCTOSS/user/toChangePwd" class="password_off"></a></li>
 </div>
 <!--导航区域结束-->
 <!--主要区域开始-->
