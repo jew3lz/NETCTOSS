@@ -8,11 +8,11 @@ NetCTOSS(电信运营支撑系统)是一个面向电信员工的系统,主要的
 费.NetCTOSS是面向电信员工的能够对用户数据进行查询和管理的运营管理系统.
 
 ## 开发环境和总体技术
-主要环境是IntelliJ IDEA + Oracle 11g + Tomcat,我们选择使用的是
+主要环境是**IntelliJ IDEA + Oracle 11g + Tomcat**,我们选择使用的是
 Spring + Spring MVC + MyBatis的多层架构,底层架构是Spring IoC和Spring AOP(主要为了事务控制),
-整体代码风格使用了RESTful架构.采用JSTL,EL等进行JSP页面的开发,并使用了Ajax,jQuery等技术.
+*整体代码风格使用了RESTful架构*.采用JSTL,EL等进行JSP页面的开发,并使用了Ajax,jQuery等技术.
 
-## 项目中完成的模块(本人负责的)
+## 负责模块
 我负责了NetCTOSS大部分模块的后台开发,并参与了数据库设计和DMS数据挖掘系统的开发,负责具体模块有登陆,
 权限检查,角色管理,管理员管理,资费管理,账务账号,业务账号,与个人信息和修改密码模块.
 登陆模块: 使用了Ajax技术进行用户名和密码校验并在页面给出错误提示,动态生成验证码并点击更换.
