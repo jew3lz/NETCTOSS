@@ -1,5 +1,5 @@
-# NETCTOSS
-NetCTOSS项目本人负责部分代码
+# NetCTOSS
+NetCTOSS项目本人负责部分
 
 ## 项目背景介绍
 NetCTOSS(电信运营支撑系统)是一个面向电信员工的系统,主要的功能有角色管理,
