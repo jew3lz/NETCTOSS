@@ -32,4 +32,6 @@ public interface AdminMapper {
     void deleteAdmin(int id);
 
     List<Privilege> findPrivilegesByAdmin(int id);
+
+    int findRows(AdminInfoPage page);
 }

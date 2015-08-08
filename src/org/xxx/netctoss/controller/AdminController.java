@@ -43,6 +43,9 @@ public class AdminController {
         page.setPriId(priId);
         page.setRoleName(roleName);
         page.setPage(p);
+        System.out.println(adminDao.findRows(page));
+        int totalPage = adminDao.findRows(page)/page.getPageSize();
+        page.setTotalPage(totalPage);
         List<Privilege> modules = PrivilegeReader.getModules();
         List<Admin> list = adminDao.findByPage(page);
         model.addAttribute("admins", list);

@@ -113,4 +113,23 @@
         <id property="id" column="MODULE_ID"/>
         <result property="name" column="name"/>
     </resultMap>
+
+    <select id="findRows" parameterType="org.xxx.netctoss.vo.AdminInfoPage" resultType="int">
+        SELECT count(*) FROM ADMIN_INFO
+        WHERE ADMIN_ID IN (
+        SELECT a.admin_id
+        from admin_info a
+        left join admin_role ar on a.admin_id=ar.admin_id
+        left join role_info ri on ri.role_id=ar.role_id
+        left join ROLE_PRIVILEGE rp on rp.role_id=ri.role_id
+        <where>
+            <if test="-1!=priId">
+                and rp.PRIVILEGE_ID=#{priId, jdbcType=NUMERIC}
+            </if>
+            <if test="!'*'.equals(roleName)">
+                and ri.NAME = #{roleName, jdbcType=VARCHAR}
+            </if>
+        </where>
+        )
+    </select>
 </mapper>

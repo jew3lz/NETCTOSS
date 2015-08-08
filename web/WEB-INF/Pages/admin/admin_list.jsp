@@ -148,13 +148,32 @@
 		</div>
 		<!--分页-->
 		<div id="pages">
-			<a href="#">上一页</a>
-			<a href="#" class="current_page">1</a>
-			<a href="#">2</a>
-			<a href="#">3</a>
-			<a href="#">4</a>
-			<a href="#">5</a>
-			<a href="#">下一页</a>
+			<c:choose>
+				<c:when test="${page.page>1}">
+					<a href="javascript:;doSearch(${page.page-1})">上一页</a>
+				</c:when>
+				<c:otherwise>
+					<a href="javascript:;">上一页</a>
+				</c:otherwise>
+			</c:choose>
+			<c:forEach var="i" begin="1" end="${page.totalPage}">
+				<c:choose>
+					<c:when test="${i==page.page}">
+						<a href="javascript:;doSearch(${i})" class="current_page">${i}</a>
+					</c:when>
+					<c:otherwise>
+						<a href="javascript:;doSearch(${i})">${i}</a>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+			<c:choose>
+				<c:when test="${page.page<page.totalPage}">
+					<a href="javascript:;doSearch(${page.page+1})">下一页</a>
+				</c:when>
+				<c:otherwise>
+					<a href="javascript:;">下一页</a>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	</form:form>
 </div>

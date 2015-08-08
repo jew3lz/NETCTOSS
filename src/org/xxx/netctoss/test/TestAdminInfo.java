@@ -23,6 +23,7 @@ public class TestAdminInfo {
         page.setPriId(-1);
         page.setRoleName("*");
         page.setPage(1);
+        System.out.println(Mapper.findRows(page));
         List<Admin> lines = Mapper.findByPage(page);
         for (Admin line : lines) {
 //            System.out.println(line);
@@ -30,7 +31,7 @@ public class TestAdminInfo {
 
         List<Privilege> list = PrivilegeReader.getModules();
         for (Privilege privilege : list) {
-            System.out.println(privilege.getId() + " *** " +privilege.getName());
+//            System.out.println(privilege.getId() + " *** " +privilege.getName());
         }
         for (Privilege privilege : list) {
             privilege.setUrls(PrivilegeReader.getUrlsById(privilege.getId()));
