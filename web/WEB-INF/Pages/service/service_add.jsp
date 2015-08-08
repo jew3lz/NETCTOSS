@@ -16,7 +16,7 @@
 
 			var idcard_no = $("#idcard_no").val();
 			if (idcard_no == "") {
-				$("#idcard_no_msg").text("身份证不能为空.").addClass("error_msg");
+				$("#idcard_no_msg").text("身份证不能为空").addClass("error_msg");
 				return;
 			}
 			var reg = /^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{4}$/;
